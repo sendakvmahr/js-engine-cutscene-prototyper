@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <header>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <link rel="shortcut icon" href="images/icon.png">
+        <title>JS Engine Demo</title>
+        <style>
+            html, body{ 
+                margin: auto;
+                padding: 0;
+                background-color: #000222;
+            } 
+            #canvas{ 
+                display: block;        
+                cursor: none;
+                margin: auto;
+                vertical-align: bottom;
+            }
+        </style>
+    </header> 
+    
+    <body>
+        <canvas id="canvas" oncontextmenu="return false;">
+            HTML5 is not supported on this browser.
+        </canvas>
+    </body>
+    
+    <footer>
+        <script type="text/javascript" src="js/lib/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="js/lib/require.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+        <script> 
+        requirejs.config({
+            baseUrl: 'js/',
+        });
+        </script>
+        <script type="text/javascript" src="js/assets/loadImages.js"></script>
+    </footer>
+</html>
