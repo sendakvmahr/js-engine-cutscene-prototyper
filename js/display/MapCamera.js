@@ -16,34 +16,19 @@ function(Vector, goody, vars)
         this._mapPixelWidth = map.pixelWidth;
         this._mapPixelHeight = map.pixelHeight;
         this._mapLength = map.length;
+        // THIS WAS FFTP SPECIFIC, as each height element had both an effect layer and a base layer. 
+        //but buffer length should be set anyways
         var bufferLength = map.displayedLayers * 2;
-        var offset = 0;
-        console.log(map);
+        // Also FFTP specific, but useful in that this is base code for creating a parallax layer
         if (map.parallax) {
-            for (var i = 0; i < 2; i++) {
-                var i = this._buffer.length;
-                this._buffer.push(document.createElement("canvas"));
-                this._buffer[i].width = this._mapPixelWidth;
-                this._buffer[i].height = this._mapPixelHeight;
-                var ctx = this._buffer[i].getContext("2d");
-                var image = images["intro_P" + i];
-                ctx.drawImage(
-                    image,                                                   //image
-                    0,                                                       //x position on image
-                    0,                                                       //y position on image
-                    image.width,                                             //imageWidth on Source
-                    image.height,                                            //imageHeight on Source
-                    0,                                                       //xPosCanvas    
-                    0,                                                       //yPosCanvas    
-                    image.width,                                             //imageWidth on Canvas
-                    image.height                                              //imageHeight on Canvas                
-                );
-            }
+            this.renderParallaxLayer("intro_P0");
         }
         for (var i = 0; i < bufferLength; i += 2) {
             this.renderLayer(map.imageMap[Math.floor(i/2)], map, images.Tileset);
             this.renderLayer(map.effectMap[Math.floor(i/2)], map, images.Tileset);
         }
+
+        // Set font and color for debugging information
         this._ctx.font = "20px sans-serif";
         this._ctx.fillStyle = "#FF0000";
     }
@@ -55,7 +40,7 @@ function(Vector, goody, vars)
         for (var i = (map.parallax ? 2 : 0); i < bufferLength; i += 2) {
             var layerNumber = i + 1;
             var layer = map.effectMap[i/2 - (map.parallax ? 1 : 0)];
-                // console.log(i/2 - (map.parallax ? 1 : 0), layerNumber);
+            // console.log(i/2 - (map.parallax ? 1 : 0), layerNumber);
             var ctx = this._buffer[layerNumber].getContext("2d");
             ctx.clearRect (0, 0, map.pixelHeight, map.pixelWidth);
            for (var n = 0; n < this._mapLength; n++) {
@@ -64,7 +49,32 @@ function(Vector, goody, vars)
         }
     }
 
+    MapCamera.prototype.renderParallaxLayer = function(parallaxImage) {
+        // As of now, parallax cannot move, and the buffer is the size of
+        //  the map, not forced to be the same size as the camera
+        var i = this._buffer.length;
+        this._buffer.push(document.createElement("canvas"));
+        this._buffer[i].width = this._mapPixelWidth;
+        this._buffer[i].height = this._mapPixelHeight;
+        var ctx = this._buffer[i].getContext("2d");
+        var image = images[parallaxImage];
+        ctx.drawImage(
+            image,                                                   //image
+            0,                                                       //x position on image
+            0,                                                       //y position on image
+            image.width,                                             //imageWidth on Source
+            image.height,                                            //imageHeight on Source
+            0,                                                       //xPosCanvas    
+            0,                                                       //yPosCanvas    
+            image.width,                                             //imageWidth on Canvas
+            image.height                                             //imageHeight on Canvas                
+        );
+    
+    }
+
     MapCamera.prototype.renderLayer = function(layer, map, image) {
+        // makes a context for the layer given, renders all the tiles on the context,
+        // and adds it to the camera buffer.  
         var i = this._buffer.length;
         this._buffer.push(document.createElement("canvas"));
         this._buffer[i].width = this._mapPixelWidth;
@@ -79,9 +89,9 @@ function(Vector, goody, vars)
         // Calculates the displacement of the map 
         var cwidth = vars.displayWidth;
         var cheight = vars.displayHeight;
-        //var MCpos = MC.rect.position;
-        //this._offset.x = Math.floor(goody.cap(cwidth / 2 - MCpos.x, -this._mapPixelWidth + cwidth, 0));
-        //this._offset.y = Math.floor(goody.cap(cheight /2 - MCpos.y, -this._mapPixelHeight + cheight, 0));
+        var MCpos = MC.rect.position;
+        this._offset.x = Math.floor(goody.cap(cwidth / 2 - MCpos.x, -this._mapPixelWidth + cwidth, 0));
+        this._offset.y = Math.floor(goody.cap(cheight /2 - MCpos.y, -this._mapPixelHeight + cheight, 0));
     };
 
     MapCamera.prototype.showString = function(string, y) {
@@ -91,12 +101,13 @@ function(Vector, goody, vars)
 
     MapCamera.prototype.display = function(MC, cursor, objects) {
         // Displays the map, MainChar, cursor, and any additional Entity objects
-        //this._calcOffset(MC);
+        // right now, does not handle any other entities besides MC
+        this._calcOffset(MC);
         var bufferLength = this._buffer.length;
         var MCdrawn = false;
         for (var i = 0; i < bufferLength; i++) {
             this._ctx.drawImage(this._buffer[i], this._offset.x, this._offset.y);
-            //if (Math.floor(i / 2) === MC.movementAttributes.height + 1 + MC.movementAttributes.airborne ? 1 : 0) {
+            // make better z axis rendering for the main character and other entities
             if (i == bufferLength) {
                 MC.drawImage(this._ctx, this._offset);
                 MCdrawn = true;
@@ -106,12 +117,6 @@ function(Vector, goody, vars)
             MC.drawImage(this._ctx, this._offset);
         }
         cursor.display(this._ctx);
-        // Display debugging information - whatever is necessary at the moment 
-        //var scrap = MC.movementAttributes;
-        // this.showString(scrap.height, 20);
-		//console.log( MC.movementAttributes);
-        //this.showString(scrap.height, 60);
-        // this.showString("t= " + scrap.temperature + "height=" + scrap.height + " air=" + scrap.airborne + " sink=" + scrap.sinking);
     }
 
     MapCamera.prototype.absolutePosition = function(canvasPosition) {
@@ -120,6 +125,7 @@ function(Vector, goody, vars)
     
     MapCamera.prototype.renderTile = function(i, tile, map, ctx) {    
         // Most likely a lot of this has to change once I get the main tileset...
+        // this is a lot of magic numbers due to FFtP's strangely giaagantic tilesheet
         if ( tile === 1 ) { return; }
         
         var image;

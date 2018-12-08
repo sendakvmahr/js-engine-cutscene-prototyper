@@ -1,3 +1,4 @@
+// images are fetched from root/images
 var imageNames = [
 	"dragonfly",
 	"MC",
@@ -14,6 +15,7 @@ var imageNames = [
 var images = {};
 
 $(function() {  
+    // loads listed images and stores them in the images using their provided name
     var loaded = 0;
     var numImages = imageNames.length;
     if (imageNames.length == 0) {

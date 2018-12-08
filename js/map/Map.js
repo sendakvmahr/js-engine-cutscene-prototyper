@@ -2,7 +2,9 @@ define(["lib/goody", "physics/Vector", "assets/vars"],
 function(goody, Vector, vars)
 {    
     function Map(json) {
-
+        // This pretty much shuold be redone for each game, make it a base for a top down since that is the demo
+        // should be very basic - collision flags layer and maybe visual layers
+        // redo the whole thing, THEN document it
         this.height = json.height;
         this.width = json.width;
         this.pixelWidth = this.width * vars.tileDimension;

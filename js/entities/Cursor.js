@@ -3,11 +3,9 @@ function(Animation, Vector, goody)
 {    
     function Cursor(element) {
         this.position = new Vector.Vector(0,0); 
+        // !!! Hardcoded, should be more flexible
         this.sprite = new Animation.Animation(images.dragonfly, 2, 19, 18);
-        //this.setElement(element);
         this.offset = new Vector.Vector(5 * element, 0);
-        //this.element = element;
-        //this.elementCap = 5;
     };
 
     Cursor.prototype.display = function(ctx) {

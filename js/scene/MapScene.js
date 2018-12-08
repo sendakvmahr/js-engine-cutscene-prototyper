@@ -4,10 +4,9 @@ function(Vector, goody, Scene, Map, Cursor, MainChar, CollisionHandler, MapCamer
     MapScene.prototype = new Scene.Scene();
     MapScene.prototype.constructor = MapScene;
 
-    function MapScene(ctx, json, currentElement) {
+    function MapScene(ctx, json) {
         this.map = new Map.Map(json);
-		console.log(this.map);
-        this.cursor = new Cursor.Cursor(currentElement);
+        this.cursor = new Cursor.Cursor();
         this.MC = new MainChar.MainChar();
 		
 		var objects = this.map.objects;

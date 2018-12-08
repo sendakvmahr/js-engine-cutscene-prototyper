@@ -7,16 +7,13 @@ function(Vector, goody, vars)
         this._maxFrames = frames;
         this._frame = 0;
         this._image = image;
+        //imageOffset is the current top left corner of a frame on an animation's spritesheet
         this._imageOffset = new Vector.Vector(0, 0);
     }
 
     Animation.prototype.orient = function(direction) {
         // Mainly used for rotating sprites at the moment
         this._imageOffset.y = this.height * vars.directions[direction];
-    }
-
-    Animation.prototype.setOffsetY = function(y) {
-        this._imageOffset.y = y;
     }
     
     Animation.prototype.update = function() {

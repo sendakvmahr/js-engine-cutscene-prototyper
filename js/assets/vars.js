@@ -1,3 +1,4 @@
+// Global aviables
 define([],
 function()
 {
@@ -16,13 +17,6 @@ function()
     // FPS is used in interval calculations, defined here
     var fps = 30;
 
-    // Offset for each element on the tilesheet (units = tiles, not pixels)
-    var elementalTileOffsets = {
-        "Humidity": 72,
-        "Temperature": 24,
-        "Growth": 8
-    }
-
     return {
         displayHeight: 528,
         displayWidth: 748,
@@ -33,7 +27,6 @@ function()
         fps: 30,
         interval: 1000/fps,
         directions: directions,
-        elementalTileOffsets: elementalTileOffsets,
         tileSetTileWidth: 216
     }
 });

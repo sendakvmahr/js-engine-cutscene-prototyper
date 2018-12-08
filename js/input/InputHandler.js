@@ -1,3 +1,4 @@
+// Class that manages player input
 define(["physics/Vector"],
 function(Vector)
 {    

@@ -24,6 +24,7 @@ function(Animation, Entity, Vector, goody, vars)
     }
 
     MainChar.prototype.update = function(input, map, collisionHandler, timeDelta) {
+        // this is entirely variable by game but this is not a bad defualt
         // if moving 
         if (input.up||input.down||input.right||input.left) {
             // TODO = Better orientation based on dx and dy
@@ -92,59 +93,13 @@ function(Animation, Entity, Vector, goody, vars)
             // If the one of the new tiles was just stepped onto
             if (!goody.inArray(currentTiles, newTiles[i])) { 
                 var newTile = newTiles[i];
-                // Height processing is first - if MC can't reach the tile, don't bother checking for effects
-                //var heightDifference = map.getHeight(newTile) - this.movementAttributes.height;
-                //var sink = this.movementAttributes.sinking;
-                //var fly = this.movementAttributes.airborne;
-                // Do nothing if you're walking on flat ground or a slight incline
-                // Do nothing if you're not airborne or the height difference is nothing doable
-				/*
-				console.log("sink:" + sink, "fly :" + fly, map.getHeight(newTile), this.movementAttributes.height);
-                if ((map.isJump(newTile) || (Math.abs(heightDifference) > 1)) && heightDifference <= 2) {
-                    if (sink && heightDifference > -3 && heightDifference <= 0 ) {
-                        this.applyHumChange(map, newTile);
-                        this.applyTempChange(map, newTile);
-                    }
-                    else if (fly && heightDifference < 3 && heightDifference > 0) {
-                        this.applyHumChange(map, newTile);
-                        this.applyTempChange(map, newTile);
-                    }
-                    else {
-                        this.moveBack(isXaxis, distance, newTile, map);
-                    }
-                }*/
-                //this.moveBack(isXaxis, distance, newTile, map);
-                /*
-                else {
-                    this.applyHumChange(map, newTile);
-                    this.applyTempChange(map, newTile);
-                }
-                */
             }
         }
     }
-
-    MainChar.prototype.applyTempChange = function(map, newTile) {
-        var oldTemp = this.movementAttributes.temperature;
-        var newTemp = map.getElement(newTile, "Temperature");
-        if (newTemp != oldTemp) {
-            this.movementAttributes.temperature = newTemp;
-            if (newTemp === 2) { // heat
-                this.movementAttributes.airborne = true;
-                this._targetFloatOffset = -20;
-            } 
-            else if (newTemp === 1) { // neutral
-                this._targetFloatOffset = 0;
-            }
-            else { // cold
-                this.movementAttributes.sinking = true;
-                this._targetFloatOffset = 20;
-            }
-        }
-    }
-
 
     MainChar.prototype.moveBack = function(isXaxis, distance, newTile, map){
+        // moves the entity out of walls it has collided with
+
         // moving right, hit left side of wall
         if (isXaxis && distance > 0) {
             this.rect.setRight(map.tileToPixel(newTile).x-1);
