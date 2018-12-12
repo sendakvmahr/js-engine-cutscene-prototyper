@@ -18,14 +18,15 @@ function(Vector, goody, vars)
         this._mapLength = map.length;
         // THIS WAS FFTP SPECIFIC, as each height element had both an effect layer and a base layer. 
         //but buffer length should be set anyways
-        var bufferLength = map.displayedLayers * 2;
+        var bufferLength = map.displayedLayers;
         // Also FFTP specific, but useful in that this is base code for creating a parallax layer
         if (map.parallax) {
             this.renderParallaxLayer("intro_P0");
         }
         for (var i = 0; i < bufferLength; i += 2) {
-            this.renderLayer(map.imageMap[Math.floor(i/2)], map, images.Tileset);
-            this.renderLayer(map.effectMap[Math.floor(i/2)], map, images.Tileset);
+            this.renderLayer(map.imageMap[i], map, images.demo);
+            //this.renderLayer(map.imageMap[Math.floor(i/2)], map, images.Tileset);
+            //this.renderLayer(map.effectMap[Math.floor(i/2)], map, images.Tileset);
         }
 
         // Set font and color for debugging information
@@ -81,7 +82,7 @@ function(Vector, goody, vars)
         this._buffer[i].height = this._mapPixelHeight;
         var ctx = this._buffer[i].getContext("2d");
         for (var n = 0; n < this._mapLength; n++) {
-            this.renderTile(n, layer[n], map, ctx);
+            this.renderTile(n, layer[n], map, ctx, image);
         }
     }
     
@@ -123,11 +124,11 @@ function(Vector, goody, vars)
         return new Vector.Vector(canvasPosition.x - this._offset.x, canvasPosition.y - this._offset.y);
     }
     
-    MapCamera.prototype.renderTile = function(i, tile, map, ctx) {    
+    MapCamera.prototype.renderTile = function(i, tile, map, ctx, image) {    
         // Most likely a lot of this has to change once I get the main tileset...
         // this is a lot of magic numbers due to FFtP's strangely giaagantic tilesheet
         if ( tile === 1 ) { return; }
-        
+        /*
         var image;
         if (tile <= 2377) {
             image = images.Tileset;
@@ -135,11 +136,12 @@ function(Vector, goody, vars)
         else {
             image = images.Tileset; // switch to other images, they don't exist yet
         } 
-
+        */
+        console.log(tile);
         var dim = vars.tileDimension;
         var mapVector = map.tileToPixel(i);
         // offset for the number and processing tiles
-        tile = tile - 13; 
+        //tile = tile - 13; 
         var xpos = (tile % (image.width / dim) - 1) * dim;            
         var ypos = Math.floor(tile / (image.width / dim)) * dim; 
         

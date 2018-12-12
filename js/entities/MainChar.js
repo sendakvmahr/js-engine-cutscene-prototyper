@@ -91,7 +91,11 @@ function(Animation, Entity, Vector, goody, vars)
         // See if you're on any new tiles
         for (var i = 0; i < newTiles.length; i++) {
             // If the one of the new tiles was just stepped onto
-            if (!goody.inArray(currentTiles, newTiles[i])) { 
+            if (map.collisionMap[newTiles[i]] !== 0) {
+                this.moveBack(isXaxis, distance, newTiles[i], map);
+                i = newTiles.length;
+            }
+            else if (!goody.inArray(currentTiles, newTiles[i])) { 
                 var newTile = newTiles[i];
             }
         }

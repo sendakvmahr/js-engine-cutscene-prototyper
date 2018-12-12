@@ -10,6 +10,7 @@ var imageNames = [
     "intro_P0",
     "intro_P1",
     "intro_P2",
+    "demo"
 ]
 
 var images = {};

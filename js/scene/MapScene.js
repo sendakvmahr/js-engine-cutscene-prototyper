@@ -11,7 +11,7 @@ function(Vector, goody, Scene, Map, Cursor, MainChar, CollisionHandler, MapCamer
 		
 		var objects = this.map.objects;
 		for (var i = 0; i < objects.length; i++) {
-            if (objects[i].name === "MC_spawn") {
+            if (objects[i].name === "MCSpawn") {
 				this.MC.setPosition(objects[i].x, objects[i].y);
 			}
 		}
@@ -24,6 +24,7 @@ function(Vector, goody, Scene, Map, Cursor, MainChar, CollisionHandler, MapCamer
 
     MapScene.prototype.loadEntities = function() {
         this._entities = this.map.objects;
+        console.log(this._entities);
         this._events = this.map.eventMap;
     }
 

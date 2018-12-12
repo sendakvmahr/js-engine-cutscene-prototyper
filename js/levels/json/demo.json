@@ -1,7 +1,4 @@
-define([],
-function()
-{
-demo = { "height":11,
+{ "height":11,
  "infinite":false,
  "layers":[
         {
@@ -76,9 +73,3 @@ demo = { "height":11,
  "version":1.2,
  "width":8
 }
-
-return {
-	demo : demo,
-
-    };
-});

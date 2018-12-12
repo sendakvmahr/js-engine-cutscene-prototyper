@@ -24,6 +24,7 @@ function(goody, Vector, vars)
         // Objects, not really used atm
         this.objects = [];
         this.eventMap = [];
+        this.collisionMap = [];
 
         var layers = json.layers;
         for (var i = 0; i < layers.length; i++) {
@@ -32,7 +33,7 @@ function(goody, Vector, vars)
             if (goody.stringContains(name, "EF")) {
                 this.effectMap.push(layers[i].data);
             }
-            else if (goody.stringContains(name, "BG")) {
+            else if (goody.stringContains(name, "BASE")) {
                 this.imageMap.push(layers[i].data);
             }
             else if (goody.stringContains(name, "P")) {
@@ -40,11 +41,11 @@ function(goody, Vector, vars)
                 this.parallax = true;
             }
             // Height map
-            else if (name === "Height") {
-                this.heightMap = layers[i].data;
+            else if (name === "COLLISION") {
+                this.collisionMap = layers[i].data;
             }
             // Unused atm
-            else if (name === "Objects") {
+            else if (name === "ENTITIES") {
                 this.objects = layers[i].objects;
             }
             // Tiles that can only be traversed while airborne / sinking
@@ -57,7 +58,7 @@ function(goody, Vector, vars)
             }
             // Element maps
             else {
-                this.elementMap[name] = layers[i].data.map( function(x) { return x-1; } );
+                //this.elementMap[name] = layers[i].data.map( function(x) { return x-1; } );
             }
         }
     }
