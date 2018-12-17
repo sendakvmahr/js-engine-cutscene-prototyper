@@ -23,6 +23,16 @@ function(Vector, goody, vars)
         if (map.parallax) {
             this.renderParallaxLayer("intro_P0");
         }
+        //temporary
+/*
+        this._buffer[i].width = this._mapPixelWidth;
+        this._buffer[i].height = this._mapPixelHeight;
+        var ctx = this._buffer[i].getContext("2d");
+        for (var n = 0; n < this._mapLength; n++) {
+            this.renderTile(n, layer[n], map, ctx, image);
+*/
+
+
         for (var i = 0; i < bufferLength; i += 2) {
             this.renderLayer(map.imageMap[i], map, images.demo);
             //this.renderLayer(map.imageMap[Math.floor(i/2)], map, images.Tileset);
@@ -91,8 +101,16 @@ function(Vector, goody, vars)
         var cwidth = vars.displayWidth;
         var cheight = vars.displayHeight;
         var MCpos = MC.rect.position;
-        this._offset.x = Math.floor(goody.cap(cwidth / 2 - MCpos.x, -this._mapPixelWidth + cwidth, 0));
-        this._offset.y = Math.floor(goody.cap(cheight /2 - MCpos.y, -this._mapPixelHeight + cheight, 0));
+        if (this._mapPixelWidth <= cwidth) {
+            this._offset.x = (cwidth - this._mapPixelWidth)/2;
+        } else {
+            this._offset.x = Math.floor(goody.cap(cwidth / 2 - MCpos.x, -this._mapPixelWidth + cwidth, 0));        
+        }
+        if (this._mapPixelHeight <= cheight) {
+            this._offset.y = (cheight - this._mapPixelHeight)/2;
+        } else {
+            this._offset.y = Math.floor(goody.cap(cwidth / 2 - MCpos.x, -this._mapPixelHeight + cheight, 0));        
+        }
     };
 
     MapCamera.prototype.showString = function(string, y) {
@@ -106,6 +124,11 @@ function(Vector, goody, vars)
         this._calcOffset(MC);
         var bufferLength = this._buffer.length;
         var MCdrawn = false;
+        this._ctx.fillStyle = "black";
+        this._ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
+
         for (var i = 0; i < bufferLength; i++) {
             this._ctx.drawImage(this._buffer[i], this._offset.x, this._offset.y);
             // make better z axis rendering for the main character and other entities
@@ -127,7 +150,7 @@ function(Vector, goody, vars)
     MapCamera.prototype.renderTile = function(i, tile, map, ctx, image) {    
         // Most likely a lot of this has to change once I get the main tileset...
         // this is a lot of magic numbers due to FFtP's strangely giaagantic tilesheet
-        if ( tile === 1 ) { return; }
+        //if ( tile === 1 ) { return; }
         /*
         var image;
         if (tile <= 2377) {
@@ -137,14 +160,16 @@ function(Vector, goody, vars)
             image = images.Tileset; // switch to other images, they don't exist yet
         } 
         */
-        console.log(tile);
         var dim = vars.tileDimension;
         var mapVector = map.tileToPixel(i);
         // offset for the number and processing tiles
         //tile = tile - 13; 
-        var xpos = (tile % (image.width / dim) - 1) * dim;            
-        var ypos = Math.floor(tile / (image.width / dim)) * dim; 
-        
+        var xpos = ((tile+1) % (image.width / dim)) * dim;    
+        var ypos = Math.floor((tile-1) / (image.width / dim)) * dim; 
+        if (tile === 4){
+            console.log(image.width, dim);        
+            //console.log(xpos, ypos);
+        }
         ctx.drawImage(
             image,                                                      //image
             xpos,                                                       //x position on image

@@ -21,10 +21,10 @@ function()
         displayHeight: 528,
         displayWidth: 748,
         tileDimension: 24,
-        tileSetHeight: 12,
-        tileSetWidth:12,
+        tileSetHeight: 4,
+        tileSetWidth:2,
         mapLength: 144,
-        fps: 30,
+        fps: fps,
         interval: 1000/fps,
         directions: directions,
         tileSetTileWidth: 216
