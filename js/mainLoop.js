@@ -21,7 +21,6 @@ function(Vector, Button, MenuScene, MapScene, InputHandler, goody, MainChar, Map
             [images.titleScreen])
         ;
         */
-        console.log(maps.demo);
         this.scene = new MapScene.MapScene(this.ctx, maps.demo, 0);
         // this.scene = new MapScene.MapScene(this.ctx, maps.intro_0, 3, 50, 80, 7, true);
         this.resizeCanvas();  

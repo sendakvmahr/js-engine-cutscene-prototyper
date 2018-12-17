@@ -166,10 +166,6 @@ function(Vector, goody, vars)
         //tile = tile - 13; 
         var xpos = ((tile+1) % (image.width / dim)) * dim;    
         var ypos = Math.floor((tile-1) / (image.width / dim)) * dim; 
-        if (tile === 4){
-            console.log(image.width, dim);        
-            //console.log(xpos, ypos);
-        }
         ctx.drawImage(
             image,                                                      //image
             xpos,                                                       //x position on image

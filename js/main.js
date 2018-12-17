@@ -5,13 +5,10 @@ function start() {
         var main = new mainLoop.mainLoop();
         function resize() { main.resizeCanvas(); }
         function ev(event) { main.updateInput(event); }
-        
-        var $canvas = $("#canvas");
-        $canvas.bind("contextmenu mousemove click", ev);
-
-        $(document).keyup(function(e) { ev(e); });
-        $(document).keydown(function(e) { ev(e); });
-        
+        document.getElementById("canvas").addEventListener("contextmenu", function(e){ e.preventDefault(); }, false);
+        document.getElementById("canvas").addEventListener("mousemove", function(e){ ev(e); }, false);
+        document.addEventListener("keyup", function(e){ ev(e); }, false);
+        document.addEventListener("keydown", function(e){ ev(e); }, false);
         window.addEventListener('resize', resize);
         
         var vendors = ['webkit', 'moz'];

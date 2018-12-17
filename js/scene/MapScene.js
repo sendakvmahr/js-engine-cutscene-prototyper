@@ -24,7 +24,6 @@ function(Vector, goody, Scene, Map, Cursor, MainChar, CollisionHandler, MapCamer
 
     MapScene.prototype.loadEntities = function() {
         this._entities = this.map.objects;
-        console.log(this._entities);
         this._events = this.map.eventMap;
     }
 
