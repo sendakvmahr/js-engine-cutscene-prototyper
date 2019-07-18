@@ -141,6 +141,7 @@ function(Vector, goody, vars)
             MC.drawImage(this._ctx, this._offset);
         }
         cursor.display(this._ctx);
+
     }
 
     MapCamera.prototype.absolutePosition = function(canvasPosition) {

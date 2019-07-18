@@ -1,5 +1,5 @@
-define(["physics/Vector", "lib/goody", "scene/Scene", "map/Map" , "entities/Cursor", "entities/MainChar", "physics/CollisionHandler", "display/MapCamera"],
-function(Vector, goody, Scene, Map, Cursor, MainChar, CollisionHandler, MapCamera) 
+define(["scene/Script", "physics/Vector", "lib/goody", "scene/Scene", "map/Map" , "entities/Cursor", "entities/MainChar", "physics/CollisionHandler", "display/MapCamera"],
+function(Script, Vector, goody, Scene, Map, Cursor, MainChar, CollisionHandler, MapCamera) 
 {    
     MapScene.prototype = new Scene.Scene();
     MapScene.prototype.constructor = MapScene;
