@@ -8,7 +8,6 @@ function(Animation, Vector, goody)
     Cursor.prototype.display = function(ctx) {
         ctx.strokeStyle = "#FF0000";
         ctx.strokeRect(this.position.x, this.position.y, 2, 2);
-        ctx.stroke();
     }
 
     Cursor.prototype.update = function(input) {

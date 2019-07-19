@@ -1,8 +1,8 @@
 /*
 Base class for all entities
 */
-define(["lib/goody"],
-function(goody)
+define(["lib/goody", "assets/vars"],
+function(goody, vars)
 {    
     function Script(json) {   
 // testing locally and chrome is annoying with files when that happens
@@ -43,8 +43,10 @@ say flo annoyed:"What?"
     Script.prototype.renderText = function(ctx) {
     	ctx.font = "30px Arial";
     	ctx.fillStyle = "white";
-		ctx.fillText(this.state[1], 300, 300);
-
+    	ctx.textAlign = "left"; 
+        ctx.strokeStyle = "#33cccc";
+        ctx.strokeRect(0, vars.displayHeight * 3 / 4, vars.displayWidth, vars.displayHeight * 1 / 4);
+		ctx.fillText(this.state[1],  20, vars.displayHeight * 5 / 6);
     }
     
     return {
