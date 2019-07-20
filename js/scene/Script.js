@@ -15,7 +15,7 @@ json = {
 	},
 "script": 
 `
-say flo annoyed:"What?"
+say flo annoyed:What? Thirty eyes ruined, thirty eyes given. That sounds like a fair payment, doesn't it?"
 `
 }
 	json.script = json.script.split("\n");
@@ -37,16 +37,9 @@ say flo annoyed:"What?"
     		case "say": 
     			this.renderText(ctx);
     	}
-
     }
 
     Script.prototype.renderText = function(ctx) {
-    	ctx.font = "30px Arial";
-    	ctx.fillStyle = "white";
-    	ctx.textAlign = "left"; 
-        ctx.strokeStyle = "#33cccc";
-        ctx.strokeRect(0, vars.displayHeight * 3 / 4, vars.displayWidth, vars.displayHeight * 1 / 4);
-		ctx.fillText(this.state[1],  20, vars.displayHeight * 5 / 6);
     }
     
     return {
