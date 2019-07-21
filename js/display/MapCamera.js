@@ -115,6 +115,7 @@ function(Vector, goody, vars)
 
     MapCamera.prototype.showString = function(string, y) {
         // Displays a string on the upper left corner of the canvas
+        // Put an HTML debug menu later
         this._ctx.fillText(string, 10, y);
     }
 
