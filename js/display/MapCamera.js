@@ -8,6 +8,7 @@ function(Vector, goody, vars)
         this._mapPixelWidth = 0;
         this._mapPixelHeight = 0;
         this._mapLength = 0;
+        this._follow = 0;
     }
 
     MapCamera.prototype.loadMap = function(map) {
@@ -95,9 +96,12 @@ function(Vector, goody, vars)
             this.renderTile(n, layer[n], map, ctx, image);
         }
     }
+
+    MapCamera.prototype.assignEnity = entity => this._follow = (entity !== undefined) ? entity : 0;
     
-    MapCamera.prototype._calcOffset = function(MC) {
+    MapCamera.prototype._calcOffset = function() {
         // Calculates the displacement of the map 
+        if (this._follow === 0) { return; }
         var cwidth = vars.displayWidth;
         var cheight = vars.displayHeight;
         var MCpos = MC.rect.position;
@@ -119,12 +123,11 @@ function(Vector, goody, vars)
         this._ctx.fillText(string, 10, y);
     }
 
-    MapCamera.prototype.display = function(MC, cursor, objects) {
+    MapCamera.prototype.display = function(cameraEntity, MC, cursor, objects) {
         // Displays the map, MainChar, cursor, and any additional Entity objects
         // right now, does not handle any other entities besides MC
-        this._calcOffset(MC);
+        this._calcOffset();
         var bufferLength = this._buffer.length;
-        var MCdrawn = false;
         this._ctx.fillStyle = "black";
         this._ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -134,12 +137,8 @@ function(Vector, goody, vars)
             this._ctx.drawImage(this._buffer[i], this._offset.x, this._offset.y);
             // make better z axis rendering for the main character and other entities
             if (i == bufferLength) {
-                MC.drawImage(this._ctx, this._offset);
                 MCdrawn = true;
             }
-        }
-        if (!MCdrawn) {
-            MC.drawImage(this._ctx, this._offset);
         }
         cursor.display(this._ctx);
 
