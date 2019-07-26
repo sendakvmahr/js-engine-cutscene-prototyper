@@ -24,15 +24,6 @@ function(Vector, goody, vars)
         if (map.parallax) {
             this.renderParallaxLayer("intro_P0");
         }
-        //temporary
-/*
-        this._buffer[i].width = this._mapPixelWidth;
-        this._buffer[i].height = this._mapPixelHeight;
-        var ctx = this._buffer[i].getContext("2d");
-        for (var n = 0; n < this._mapLength; n++) {
-            this.renderTile(n, layer[n], map, ctx, image);
-*/
-
 
         for (var i = 0; i < bufferLength; i += 2) {
             this.renderLayer(map.imageMap[i], map, images.demo);
@@ -140,8 +131,6 @@ function(Vector, goody, vars)
                 MCdrawn = true;
             }
         }
-        cursor.display(this._ctx);
-
     }
 
     MapCamera.prototype.absolutePosition = function(canvasPosition) {

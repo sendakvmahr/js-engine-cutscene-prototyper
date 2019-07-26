@@ -12,8 +12,7 @@
                 background-color: #000222;
             } 
             #canvas{ 
-                display: block;        
-                cursor: none;
+                display: block;    
                 margin: auto;
                 vertical-align: bottom;
             }
@@ -63,12 +62,17 @@
                 bottom:  0;
                 font-family:  sans-serif;
                 background: #ffc6d073;
-                max-width: 374px;
+                width: 374px;
+                text-align:center;
                 left: 0;
                 right: 0;
                 margin-left: auto;
                 margin-right: auto;">
-                Nope going to do this the html lazy way, I am too lazy to calculate text-wrapping
+                <p id="text" style="
+                    padding-top: 0;
+                    margin: 5px 20px;
+                    text-align: left;
+                "></p>
             </div>
         </div>
         <canvas id="canvas" oncontextmenu="return false;">

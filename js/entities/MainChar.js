@@ -18,11 +18,6 @@ function(Animation, Entity, Vector, goody, vars)
         this.rect.height = 27;
     }
 
-    MainChar.prototype.setPosition = function(x, y) {
-        this.rect.setLeft(x);
-        this.rect.setTop(y);
-    }
-
     MainChar.prototype.update = function(input, map, collisionHandler, timeDelta) {
         // this is entirely variable by game but this is not a bad defualt
         // if moving 

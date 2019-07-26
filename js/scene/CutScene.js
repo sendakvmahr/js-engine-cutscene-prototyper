@@ -1,5 +1,5 @@
-define(["scene/Script", "physics/Vector", "lib/goody", "scene/Scene", "map/Map" , "entities/Cursor", "physics/CollisionHandler", "display/MapCamera", "entities/CameraEntity"],
-function(Script, Vector, goody, Scene, Map, Cursor, CollisionHandler, MapCamera, CameraEntity) 
+define(["scene/Script", "physics/Vector", "lib/goody", "scene/Scene", "map/Map" , "entities/Cursor", "physics/CollisionHandler", "display/MapCamera", "entities/Entity"],
+function(Script, Vector, goody, Scene, Map, Cursor, CollisionHandler, MapCamera, Entity) 
 {    
     CutScene.prototype = new Scene.Scene();
     CutScene.prototype.constructor = CutScene;
@@ -8,8 +8,8 @@ function(Script, Vector, goody, Scene, Map, Cursor, CollisionHandler, MapCamera,
     function CutScene(ctx, map, directionsJson) {
         this.map = new Map.Map(map);
         this.cursor = new Cursor.Cursor();
-        this.cameraFollow = new CameraEntity.CameraEntity();
-		
+        this.cameraFollow = new Entity.Entity(0, 0);
+		this._textbox = document.getElementById("text");
 		var objects = this.map.objects;
 		for (var i = 0; i < objects.length; i++) {
             if (objects[i].name === "MCSpawn") {
@@ -21,6 +21,7 @@ function(Script, Vector, goody, Scene, Map, Cursor, CollisionHandler, MapCamera,
         this.camera = new MapCamera.MapCamera(ctx);
         this.camera.loadMap(this.map);
         this.script = new Script.Script(directionsJson);
+        this._displayedText = "";
     }
 
     CutScene.prototype.loadEntities = function() {
@@ -34,15 +35,24 @@ function(Script, Vector, goody, Scene, Map, Cursor, CollisionHandler, MapCamera,
     }
 
     CutScene.prototype.click = function(mousePosition) {
-        //this.camera.reloadMap(this.map); // do this more efficiently haha
+        this.script.click(mousePosition);
     }
 
     CutScene.prototype.rightClick = function(mousePosition) {
     }
 
+    CutScene.prototype.showText = function() {
+        this._textbox.innerHTML = this._displayedText;
+    }
+
+
     CutScene.prototype.display = function() {
         this.camera.display(this.cameraFollow, this.cursor, []);
-        this.script.display(this.camera._ctx);//!!
+        //this.script.display(this.camera._ctx);//!!
+        if (this.script.line !== this._displayedText) {
+            this._displayedText = this.script.line;
+            this.showText();
+        }
     }
 
     CutScene.prototype.nextScene = function() {

@@ -15,32 +15,33 @@ json = {
 	},
 "script": 
 `
-say flo annoyed:What? Thirty eyes ruined, thirty eyes given. That sounds like a fair payment, doesn't it?"
+say flo annoyed:What? Thirty eyes ruined, thirty eyes given. That sounds like a fair payment, doesn't it?
+say flo annoyed:Hmph.
 `
 }
 	json.script = json.script.split("\n");
 	this.json = json;
-	this.index = 1;
+	this.index = 0;
 	this.state = []
-	this.update(0);
+	this.nextLine();
     }
 
     Script.prototype.update = function(delta) {
-    	var line = this.json.script[this.index].split(":");
-    	var instructions = line[0].split(" ");
-    	line = line[1];
-    	this.state = [instructions, line];
+    }
+    
+    Script.prototype.nextLine = function() {
+        this.index += 1;
+        var line = this.json.script[this.index].split(":");
+        this.instruction = line[0].split(" ");
+        this.line = line[1];
     }
 
-    Script.prototype.display = function(ctx) {
-    	switch(this.state[0][0]) {
-    		case "say": 
-    			this.renderText(ctx);
-    	}
+    Script.prototype.click = function(mousePosition) {
+        if (this.instruction[0] === "say") {
+            this.nextLine();
+        }
     }
 
-    Script.prototype.renderText = function(ctx) {
-    }
     
     return {
         Script:Script

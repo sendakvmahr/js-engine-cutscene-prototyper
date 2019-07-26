@@ -9,6 +9,7 @@ function start() {
         document.getElementById("canvas").addEventListener("mousemove", function(e){ ev(e); }, false);
         document.addEventListener("keyup", function(e){ ev(e); }, false);
         document.addEventListener("keydown", function(e){ ev(e); }, false);
+        document.addEventListener("click", function(e){ ev(e); }, false);
         window.addEventListener('resize', resize);
         
         var vendors = ['webkit', 'moz'];
