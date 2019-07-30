@@ -22,6 +22,7 @@ function(Script, Vector, goody, Scene, Map, Cursor, CollisionHandler, MapCamera,
         this.camera.loadMap(this.map);
         this.script = new Script.Script(directionsJson);
         this._displayedText = "";
+        this._character = [document.getElementById("portrait"), document.getElementById("mouth"), document.getElementById("eyes")];  
     }
 
     CutScene.prototype.loadEntities = function() {
@@ -43,6 +44,10 @@ function(Script, Vector, goody, Scene, Map, Cursor, CollisionHandler, MapCamera,
 
     CutScene.prototype.showText = function() {
         this._textbox.innerHTML = this._displayedText;
+        var images = this.script.getPortrait();
+        this._character[0].src = images[0];
+        this._character[1].src = images[1];
+        this._character[2].src = images[2];
     }
 
 
