@@ -58,6 +58,13 @@ function(Script, Vector, goody, Scene, Map, Cursor, CollisionHandler, MapCamera,
             this._displayedText = this.script.line;
             this.showText();
         }
+        var keys = Object.keys(this.script.characters);
+        this.camera._ctx.fillStyle = "#ff0000";
+        for (let charInd in keys) {
+            var char = this.script.characters[keys[charInd]];
+            this.camera._ctx.rect(char[0], char[1], 24, 48);
+            this.camera._ctx.fill();
+        }
     }
 
     CutScene.prototype.nextScene = function() {

@@ -9,11 +9,12 @@ function(goody, vars)
 json = {
 "map": "map",
 "characters": {
-"flo" : {
-"joking": ["flo pose neutral.png", "flo mouth happy.png", "flo eyes side.png"],
-"annoyed": ["flo pose neutral.png", "flo mouth happy.png", "flo eyes neutral.png"]
-}
+    "flo" : {
+        "joking": ["flo pose neutral.png", "flo mouth happy.png", "flo eyes side.png"],
+        "annoyed": ["flo pose neutral.png", "flo mouth happy.png", "flo eyes neutral.png"]
+     }
 },
+"mapChars":  {"flo": [10, 10] },
 "script": 
 `
 say flo annoyed:What? Thirty eyes ruined, thirty eyes given. That sounds like a fair payment, doesn't it?
@@ -23,8 +24,9 @@ say flo joking:Hmph.
         json.script = json.script.split("\n");
         this.json = json;
         this.index = 0;
-        this.state = []
+        this.state = [];
         this.nextLine();
+        this.characters = json.mapChars;
     }
 
     Script.prototype.update = function(delta) {
