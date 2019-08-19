@@ -18,6 +18,7 @@ json = {
 "script": 
 `
 say flo annoyed:What? Thirty eyes ruined, thirty eyes given. That sounds like a fair payment, doesn't it?
+move while flo 60,60 
 say flo joking:Hmph.
 `
         }
@@ -30,6 +31,17 @@ say flo joking:Hmph.
     }
 
     Script.prototype.update = function(delta) {
+        this.state = this.instruction[0];
+        switch(this.instruction[0]){
+            case "say":
+                break;
+            case "move":
+                var char = this.instruction[2];
+                var coordinate = this.instruction[3].split(",");
+                coordinate = [parseInt(coordinate[0]), parseInt(coordinate[1])];
+                console.log(coordinate);
+                this.characters[char] = coordinate;
+        }
     }
     
     Script.prototype.getPortrait = function() {
@@ -53,6 +65,7 @@ say flo joking:Hmph.
         var line = this.json.script[this.index].split(":");
         this.instruction = line[0].split(" ");
         this.line = line[1];
+        this.update();
     }
 
     Script.prototype.click = function(mousePosition) {

@@ -43,11 +43,13 @@ function(Script, Vector, goody, Scene, Map, Cursor, CollisionHandler, MapCamera,
     }
 
     CutScene.prototype.showText = function() {
-        this._textbox.innerHTML = this._displayedText;
-        var images = this.script.getPortrait();
-        this._character[0].src = images[0];
-        this._character[1].src = images[1];
-        this._character[2].src = images[2];
+        if (this.script.state === "say") {
+            this._textbox.innerHTML = this._displayedText;
+            var images = this.script.getPortrait();
+            this._character[0].src = images[0];
+            this._character[1].src = images[1];
+            this._character[2].src = images[2];
+        }
     }
 
 
