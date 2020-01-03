@@ -42,34 +42,50 @@ def to_xml_info(filename):
 
 def generate_map_file(levels):
     result = "define([],\nfunction()\n{\nmaps = \n{"
-    all_levels = []
     for level in levels:
         result += to_xml_info(level) + ",\n"
-        all_levels.append(level)
     result += "}\n"
     result += "return maps;\n"
     result += "});"
     file = open("maps.js", "w")
     file.write(result)
     file.close()
+
+def from_xml_tileset(filename):
+    # formats relevant information into a json string
+    root = ET.parse(filename).getroot()
+    name = filename.split("/")[-1].replace(".tsx", "")
+    _image = root.find("image")
+    image = _image.attrib["source"].split("/")[-1]
+    width = _image.attrib["width"]
+    height = _image.attrib["height"]
+
+    result = '\t"' + name + '": {\n'
+    result += '\t\t"name": "' + name + '",\n'
+    result += '\t\t"image": "' + image + '",\n' 
+    result += '\t\t"width": "' + width + '",\n' 
+    result += '\t\t"height": "' + height + '",\n' 
+    result += '\t\t"properties": [\n'
+    for tile in root.findall('tile'):
+        result += '\t\t\t{\n\t\t\t\t"id": ' + tile.attrib["id"] + ",\n"
+        for p in tile.find("properties").findall("property"):
+            result += '\t\t\t\t"{}": "{}",\n'.format(p.attrib["name"], p.attrib["value"])
+        result += '\t\t\t},\n'
+    result += '\t\t]\n'
+    result += '\t},\n'
+    result += '}\n'
+    return result
     
 def rewrite_assets(tilesets):
+    result = "define([],\nfunction()\n{\ntiles = \n{\n"
     for tileset in tilesets:
-        pass
-        # tilset.js file, similar to levels. load tileset on request
-        # offsets for all the tile ids
-        # json list as well
-        """
-        tilesets: {
-            tileset_name: 
-                {
-                    x_offset:
-                    y_offset: 
-                    properties: 
-                }
-            ]
-        }
-        """
+        result += from_xml_tileset(tileset)
+    result += "return tiles;\n"
+    result += "});"
+    file = open("tilesets.js", "w")
+    file.write(result)
+    file.close()
+
 
 maps = gen_results(LEVELS_DIR)
 generate_map_file(maps)
