@@ -34,16 +34,20 @@ def to_xml_info(filename):
     result += '\t\t"layers": {\n'
     for layer in root.findall('layer'):
         result += '\t\t\t"' + layer.attrib["name"] + '": [\n'
-        result += '\t\t\t\t"' + layer.find("data").text.replace("\n", "") + "\n"
+        result += '\t\t\t\t' + layer.find("data").text.replace("\n", "") + "\n"
         result += '\t\t\t],\n'
     result += '\t\t}\n'
     result += '\t}'
     return result
 
 def generate_map_file(levels):
-    result = "define([],\nfunction()\n{\n"
+    result = "define([],\nfunction()\n{\nmaps = \n{"
+    all_levels = []
     for level in levels:
         result += to_xml_info(level) + ",\n"
+        all_levels.append(level)
+    result += "}\n"
+    result += "return maps;\n"
     result += "});"
     file = open("maps.js", "w")
     file.write(result)
@@ -69,5 +73,6 @@ def rewrite_assets(tilesets):
 
 maps = gen_results(LEVELS_DIR)
 generate_map_file(maps)
+
 tilesets = gen_results(ASSETS_DIR)
 rewrite_assets(tilesets)
