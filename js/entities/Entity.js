@@ -14,6 +14,9 @@ function(goody, Vector, Rect)
         this.rect.setTop(y);
     }
 
+    Entity.prototype.drawImage = function(ctx, offset) {
+        this.rect.draw(ctx, offset);
+    }
     
     return {
         Entity:Entity

@@ -88,14 +88,16 @@ function(Vector, goody, vars)
         }
     }
 
-    MapCamera.prototype.assignEnity = entity => this._follow = (entity !== undefined) ? entity : 0;
-    
+    MapCamera.prototype.assignEnity = function(entity) {
+        this._follow = (entity !== undefined) ? entity : 0;
+    }
+
     MapCamera.prototype._calcOffset = function() {
         // Calculates the displacement of the map 
         if (this._follow === 0) { return; }
         var cwidth = vars.displayWidth;
         var cheight = vars.displayHeight;
-        var MCpos = MC.rect.position;
+        var MCpos = this._follow.rect.position;
         if (this._mapPixelWidth <= cwidth) {
             this._offset.x = (cwidth - this._mapPixelWidth)/2;
         } else {

@@ -48,12 +48,30 @@ function(goody, Vector, vars)
                 this.collisionMap = layers[name];
             }
             // Unused atm
-            else if (name === "Entity") {
-                this.objects = layers[i].objects;
+            else if (goody.stringContains(name, "Entity")) {
+                this.spawnEntities(layers[name], tilesets);
             }
             // Events
             else if (name === "Events") {
                 this.eventMap = layers[name];
+            }
+        }
+    }
+
+    Map.prototype.spawnEntities = function(entityLayer, tilesets){
+        var properties = {};
+        for (var i = 0; i < tilesets.length; i++) {
+            for (var p = 0; p < tilesets[i].properties.length; p++) {
+                var props = tilesets[i].properties[p];
+                if ("spawn" in props) {
+                    properties[props.id] = props;
+                }
+            }
+        }
+        for (var i = 0; i < entityLayer.length; i++) {
+            if (entityLayer[i] in properties) {
+                this.objects.push(properties[entityLayer[i]]);
+                this.objects[this.objects.length-1]["spawntile"] = i;
             }
         }
     }

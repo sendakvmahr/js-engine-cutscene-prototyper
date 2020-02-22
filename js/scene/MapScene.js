@@ -1,5 +1,5 @@
-define(["scene/Script", "physics/Vector", "lib/goody", "scene/Scene", "map/Map" , "entities/Cursor", "entities/MainChar", "physics/CollisionHandler", "display/MapCamera"],
-function(Script, Vector, goody, Scene, Map, Cursor, MainChar, CollisionHandler, MapCamera) 
+define(["entities/Entity","scene/Script", "physics/Vector", "lib/goody", "scene/Scene", "map/Map" , "entities/Cursor", "entities/MainChar", "physics/CollisionHandler", "display/MapCamera"],
+function(Entity, Script, Vector, goody, Scene, Map, Cursor, MainChar, CollisionHandler, MapCamera) 
 {    
     MapScene.prototype = new Scene.Scene();
     MapScene.prototype.constructor = MapScene;
@@ -15,15 +15,25 @@ function(Script, Vector, goody, Scene, Map, Cursor, MainChar, CollisionHandler, 
 				this.MC.setPosition(objects[i].x, objects[i].y);
 			}
 		}
+        this.cameraFollow = 0;
         this.loadEntities();
         this.collisionHandler = new CollisionHandler.CollisionHandler();
         this.camera = new MapCamera.MapCamera(ctx);
         this.camera.loadMap(this.map);
-        this._elementCap = 6; // should be in some global state variable
+        this.camera.assignEnity(this._entities[this.cameraFollow]);
     }
 
     MapScene.prototype.loadEntities = function() {
-        this._entities = this.map.objects;
+        this._entities = [];
+        for (var i=0; i< this.map.objects.length; i++) {
+            var entity = this.map.objects[i];
+            var position = this.map.tileToPixel(entity.spawntile);
+            var entitySpawn = new Entity.Entity(position.x, position.y);
+            this._entities.push(new Entity.Entity(position.x, position.y));
+            if ("camera" in entity) {
+                this.cameraFollo = this._entities.length-1;
+            } 
+        }
         this._events = this.map.eventMap;
     }
 
