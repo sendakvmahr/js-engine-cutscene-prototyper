@@ -26,7 +26,7 @@ function(Vector, goody, vars)
         }
 
         for (var i = 0; i < bufferLength; i += 2) {
-            this.renderLayer(map.imageMap[i], map, images.demo);
+            this.renderLayer(map.imageMap[i], map);
             //this.renderLayer(map.imageMap[Math.floor(i/2)], map, images.Tileset);
             //this.renderLayer(map.effectMap[Math.floor(i/2)], map, images.Tileset);
         }
@@ -137,7 +137,7 @@ function(Vector, goody, vars)
         return new Vector.Vector(canvasPosition.x - this._offset.x, canvasPosition.y - this._offset.y);
     }
     
-    MapCamera.prototype.renderTile = function(i, tile, map, ctx, image) {    
+    MapCamera.prototype.renderTile = function(i, tile, map, ctx) {    
         // Most likely a lot of this has to change once I get the main tileset...
         // this is a lot of magic numbers due to FFtP's strangely giaagantic tilesheet
         //if ( tile === 1 ) { return; }
@@ -152,12 +152,32 @@ function(Vector, goody, vars)
         */
         var dim = vars.tileDimension;
         var mapVector = map.tileToPixel(i);
+        var tilesetinfo = map.tilesetInfo;
+        var tiles = "";
+        var tileOffset = 0;
+        for (var n=0; n<tilesetinfo.length; n++) {
+            if (tilesetinfo[n][0] > tile) {
+                tiles = tilesetinfo[n][1];
+                break;
+            }
+            tileOffset = tilesetinfo[n][0];
+        }
+        console.log(tilesetinfo)
+        var tileset = map.tileset[tiles];
+        console.log(tileset);
+
         // offset for the number and processing tiles
         //tile = tile - 13; 
-        var xpos = ((tile+1) % (image.width / dim)) * dim;    
-        var ypos = Math.floor((tile-1) / (image.width / dim)) * dim; 
+        //for every tile:
+        //    find the image it corresponds to
+        var xpos = tile - tileOffset;
+        var ypos = xpos;
+        xpos = Math.floor((tile-1) % (tileset.width / dim)) * dim;
+        ypos = Math.floor((tile-1) / (tileset.width / dim)) * dim;
+//        var xpos = ((tile+1) % (image.width / dim)) * dim;    
+  //      var ypos = Math.floor((tile-1) / (image.width / dim)) * dim; 
         ctx.drawImage(
-            image,                                                      //image
+            images[tiles],                                              //image
             xpos,                                                       //x position on image
             ypos,                                                       //y position on image
             dim,                                                        //imageWidth on Source

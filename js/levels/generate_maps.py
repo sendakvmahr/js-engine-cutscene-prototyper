@@ -28,9 +28,17 @@ def to_xml_info(filename):
     root = ET.parse(filename).getroot()
     name = filename.split("/")[-1][:-4]
     tileset = root.find("tileset").attrib["source"].split("/")[-1]
+    tileheight = root.attrib["tileheight"].split("/")[-1]
+    tilewidth = root.attrib["tilewidth"].split("/")[-1]
+    width = root.attrib["width"].split("/")[-1]
+    height = root.attrib["height"].split("/")[-1]
     result = '\t"' + name + '": {\n'
     result += '\t\t"name": "' + name + '",\n'
-    result += '\t\t"tileset": "' + tileset + '",\n' 
+    result += ('\t\t"tileset": "' + tileset + '",\n').replace(".tsx", "")
+    result += '\t\t"tilewidth": "' + tilewidth + '",\n' 
+    result += '\t\t"tileheight": "' + tileheight + '",\n' 
+    result += '\t\t"width": "' + width + '",\n' 
+    result += '\t\t"height": "' + height + '",\n' 
     result += '\t\t"layers": {\n'
     for layer in root.findall('layer'):
         result += '\t\t\t"' + layer.attrib["name"] + '": [\n'
@@ -90,5 +98,5 @@ def rewrite_assets(tilesets):
 maps = gen_results(LEVELS_DIR)
 generate_map_file(maps)
 
-tilesets = gen_results(ASSETS_DIR)
-rewrite_assets(tilesets)
+#tilesets = gen_results(ASSETS_DIR)
+#rewrite_assets(tilesets)

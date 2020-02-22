@@ -2,12 +2,13 @@ define([],
 function()
 {
 tiles = 
-{
-	"BaseTiles": {
+	[{
+
 		"name": "BaseTiles",
 		"image": "BaseTiles.png",
 		"width": "192",
 		"height": "192",
+		"tilecount": "64",
 		"properties": [
 			{
 				"id": 1,
@@ -18,7 +19,8 @@ tiles =
 				"spawn": "testEntity",
 			},
 		]
-	},
-}
+
+	}
+	]
 return tiles;
 });

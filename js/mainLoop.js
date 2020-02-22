@@ -1,5 +1,5 @@
-define(["physics/Vector", "input/Button", "scene/MenuScene", "scene/MapScene", "input/InputHandler","lib/goody", "entities/MainChar", "display/MapCamera", "levels/maps", "assets/vars", "map/Map", "physics/CollisionHandler", "scene/CutScene"],
-function(Vector, Button, MenuScene, MapScene, InputHandler, goody, MainChar, MapCamera, maps, vars, Map, CollisionHandler, CutScene)
+define(["physics/Vector", "input/Button", "scene/MenuScene", "scene/MapScene", "input/InputHandler","lib/goody", "entities/MainChar", "display/MapCamera", "levels/maps", "assets/vars", "map/Map", "physics/CollisionHandler", "scene/CutScene", "levels/tilesets"],
+function(Vector, Button, MenuScene, MapScene, InputHandler, goody, MainChar, MapCamera, maps, vars, Map, CollisionHandler, CutScene, Tilesets)
 {
     function mainLoop() {
         this.canvas = document.getElementById('canvas');
@@ -21,9 +21,9 @@ function(Vector, Button, MenuScene, MapScene, InputHandler, goody, MainChar, Map
             [images.titleScreen])
         ;
         */
-        //this.scene = new MapScene.MapScene(this.ctx, maps.demo, 0);
+        this.scene = new MapScene.MapScene(this.ctx, maps.new, Tilesets);
         // this.scene = new MapScene.MapScene(this.ctx, maps.intro_0, 3, 50, 80, 7, true);
-        this.scene = new CutScene.CutScene(this.ctx, maps.new);
+        //this.scene = new CutScene.CutScene(this.ctx, maps.new);
         this.resizeCanvas();  
     };
     

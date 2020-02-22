@@ -4,8 +4,8 @@ function(Script, Vector, goody, Scene, Map, Cursor, MainChar, CollisionHandler, 
     MapScene.prototype = new Scene.Scene();
     MapScene.prototype.constructor = MapScene;
 
-    function MapScene(ctx, json) {
-        this.map = new Map.Map(json);
+    function MapScene(ctx, json, tileset) {
+        this.map = new Map.Map(json, tileset);
         this.cursor = new Cursor.Cursor();
         this.MC = new MainChar.MainChar();
 		
