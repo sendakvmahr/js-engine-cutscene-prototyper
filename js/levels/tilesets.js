@@ -12,12 +12,13 @@ tiles =
 		"properties": [
 			{
 				"id": 1,
-				"spawn": "testEntity2",
+				"spawn": "Entity",
 			},
 			{
 				"id": 8,
 				"camera": "true",
-				"spawn": "testEntity",
+				"inputAffected": "true",
+				"spawn": "GreenEntity",
 			},
 		]
 	}

@@ -3,13 +3,14 @@
  <image source="../../../images/BaseTiles.png" width="192" height="192"/>
  <tile id="1">
   <properties>
-   <property name="spawn" value="testEntity2"/>
+   <property name="spawn" value="Entity"/>
   </properties>
  </tile>
  <tile id="8">
   <properties>
    <property name="camera" type="bool" value="true"/>
-   <property name="spawn" value="testEntity"/>
+   <property name="inputAffected" type="bool" value="true"/>
+   <property name="spawn" value="GreenEntity"/>
   </properties>
  </tile>
 </tileset>

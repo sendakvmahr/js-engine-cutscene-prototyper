@@ -2,16 +2,18 @@ define(["lib/goody", "physics/Vector", "assets/vars"],
 function(goody, Vector, vars)
 {    
     function Map(json, tilesets) {
-        // This pretty much shuold be redone for each game, make it a base for a top down since that is the demo
-        // should be very basic - collision flags layer and maybe visual layers
-        // redo the whole thing, THEN document it
+        // dimensions of the map in tiles
         this.height = parseInt(json.height);
         this.width = parseInt(json.width);
+
+        // dimensions of the map in pixels
         this.pixelWidth = this.width * vars.tileDimension;
         this.pixelHeight = this.height * vars.tileDimension;
-        this.length = json.layers["Map1"].length;
-        this.displayedLayers = 1;   // for now, unsure, but there are 3 BG layers
-        this.parallax = false;
+
+        // number of layers, information for the camera
+        this.displayedLayers = 0;  
+
+        // holds the tileset information.
         this.tileset = {};
         this.tilesetInfo = [];
         var tilecount = 0;
@@ -23,35 +25,34 @@ function(goody, Vector, vars)
         }
         // Layers of the map, used for display
         this.imageMap = [];
-        this.effectMap = [];
-        this.parallaxMap = [];
-        // Objects, not really used atm
+
         this.objects = [];
         this.eventMap = [];
         this.collisionMap = [];
 
         var layers = json.layers;
         var items = Object.keys(layers);
+        this.length = json.layers[items[0]].length;
         for (var i = 0; i < items.length; i++) {
             var name = items[i];
 
             // Tile layer that's rendered
             if (goody.stringContains(name, "Map")) {
                 this.imageMap.push(layers[name]);
+                this.displayedLayers += 1;
             }
-            else if (goody.stringContains(name, "P")) {
-                this.parallaxMap.push(layers[name]);
-                this.parallax = true;
-            }
-            // Height map
+
+            // Collision map
             else if (name === "Collision") {
                 this.collisionMap = layers[name];
             }
-            // Unused atm
+
+            // Entities
             else if (goody.stringContains(name, "Entity")) {
                 this.spawnEntities(layers[name], tilesets);
             }
-            // Events
+            
+            // Events for things like room trnasitions, Unused atm
             else if (name === "Events") {
                 this.eventMap = layers[name];
             }
@@ -59,6 +60,7 @@ function(goody, Vector, vars)
     }
 
     Map.prototype.spawnEntities = function(entityLayer, tilesets){
+        // looks through teh map data and decides which enemies to spawn where
         var properties = {};
         for (var i = 0; i < tilesets.length; i++) {
             for (var p = 0; p < tilesets[i].properties.length; p++) {
@@ -70,8 +72,10 @@ function(goody, Vector, vars)
         }
         for (var i = 0; i < entityLayer.length; i++) {
             if (entityLayer[i] in properties) {
-                this.objects.push(properties[entityLayer[i]]);
-                this.objects[this.objects.length-1]["spawntile"] = i;
+                this.objects.push({});
+                var index = this.objects.length-1;
+                Object.assign(this.objects[index], properties[entityLayer[i]])
+                this.objects[index].spawntile = i;
             }
         }
     }
@@ -82,7 +86,6 @@ function(goody, Vector, vars)
     Map.prototype.findColumn = function(tileNumber) {
         return tileNumber % this.width; 
     }
-
     
     Map.prototype.getHeight = function(tileIndex) {
         return this.heightMap[tileIndex];

@@ -97,16 +97,16 @@ function(Vector, goody, vars)
         if (this._follow === 0) { return; }
         var cwidth = vars.displayWidth;
         var cheight = vars.displayHeight;
-        var MCpos = this._follow.rect.position;
+        var followPos = this._follow.rect.position;
         if (this._mapPixelWidth <= cwidth) {
             this._offset.x = (cwidth - this._mapPixelWidth)/2;
         } else {
-            this._offset.x = Math.floor(goody.cap(cwidth / 2 - MCpos.x, -this._mapPixelWidth + cwidth, 0));        
+            this._offset.x = Math.floor(goody.cap(cwidth / 2 - followPos.x, -this._mapPixelWidth + cwidth, 0));        
         }
         if (this._mapPixelHeight <= cheight) {
             this._offset.y = (cheight - this._mapPixelHeight)/2;
         } else {
-            this._offset.y = Math.floor(goody.cap(cwidth / 2 - MCpos.x, -this._mapPixelHeight + cheight, 0));        
+            this._offset.y = Math.floor(goody.cap(cwidth / 2 - followPos.x, -this._mapPixelHeight + cheight, 0));        
         }
     };
 
@@ -116,22 +116,18 @@ function(Vector, goody, vars)
         this._ctx.fillText(string, 10, y);
     }
 
-    MapCamera.prototype.display = function(cameraEntity, MC, cursor, objects) {
-        // Displays the map, MainChar, cursor, and any additional Entity objects
-        // right now, does not handle any other entities besides MC
+    MapCamera.prototype.display = function(cursor, objects) {
+        // Displays the map and Entity objects on top. 
         this._calcOffset();
         var bufferLength = this._buffer.length;
         this._ctx.fillStyle = "black";
         this._ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-
-
         for (var i = 0; i < bufferLength; i++) {
             this._ctx.drawImage(this._buffer[i], this._offset.x, this._offset.y);
-            // make better z axis rendering for the main character and other entities
-            if (i == bufferLength) {
-                MCdrawn = true;
-            }
+        }
+        for (var i = 0; i < objects.length; i++) {
+            objects[i].drawImage(this._ctx, this._offset);
         }
     }
 
@@ -140,18 +136,6 @@ function(Vector, goody, vars)
     }
     
     MapCamera.prototype.renderTile = function(i, tile, map, ctx) {    
-        // Most likely a lot of this has to change once I get the main tileset...
-        // this is a lot of magic numbers due to FFtP's strangely giaagantic tilesheet
-        //if ( tile === 1 ) { return; }
-        /*
-        var image;
-        if (tile <= 2377) {
-            image = images.Tileset;
-        }
-        else {
-            image = images.Tileset; // switch to other images, they don't exist yet
-        } 
-        */
         var dim = vars.tileDimension;
         var mapVector = map.tileToPixel(i);
         var tilesetinfo = map.tilesetInfo;

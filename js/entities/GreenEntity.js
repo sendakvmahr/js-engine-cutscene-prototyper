@@ -1,24 +1,25 @@
 define(["display/Animation", "entities/Entity", "physics/Vector", "lib/goody", "assets/vars"],
 function(Animation, Entity, Vector, goody, vars)
 {    
-    MainChar.prototype = new Entity.Entity();
-    MainChar.prototype.constructor = MainChar;
+    GreenEntity.prototype = new Entity.Entity();
+    GreenEntity.prototype.constructor = GreenEntity;
 
-    function MainChar(x, y, z) {
+    function GreenEntity(x, y, z) {
         Entity.Entity.apply(this, arguments);
         this._accel = 1.5;
         this._velCap = 3;
         this._friction = .7;
         this._floatOffset = 0;        // image offsets as a result of flying and sinking
         this._targetFloatOffset = 0;  // target image offset at min/max height
-        this._sprite = new Animation.Animation(images.MC, 1, 24, 48);
-        this._shadowSprite = new Animation.Animation(images.MCshadow, 1, 20, 8);
+        // HERE FOR REFERENCE FOR LATER
+        //this._sprite = new Animation.Animation(images.MC, 1, 24, 48);
+        //this._shadowSprite = new Animation.Animation(images.MCshadow, 1, 20, 8);
 
         this.rect.width = 21;
         this.rect.height = 27;
     }
 
-    MainChar.prototype.update = function(input, map, collisionHandler, timeDelta) {
+    GreenEntity.prototype.update = function(input, map, collisionHandler, timeDelta) {
         // this is entirely variable by game but this is not a bad defualt
         // if moving 
         if (input.up||input.down||input.right||input.left) {
@@ -42,6 +43,7 @@ function(Animation, Entity, Vector, goody, vars)
         else {
             this.velocity.mult(this._friction);
         }
+        /*
         var angle = 180 * this.velocity.getDirection() / Math.PI;
         if (angle < 0) {angle += 360;}
         if (angle > 22.5 && angle < 122.5) {
@@ -56,22 +58,21 @@ function(Animation, Entity, Vector, goody, vars)
         else {
             this._sprite.orient("R");
         }
+        */
         this._move(map, collisionHandler, timeDelta);
-        this._sprite.update();
+        //this._sprite.update();
     }
 
-    MainChar.prototype.drawImage = function(ctx, offset) {
-        this._shadowSprite.display(ctx, new Vector.Vector(this.rect.position.x + offset.x - 3, this.rect.position.y + offset.y + 18))
-        this._sprite.display(ctx, new Vector.Vector(this.rect.position.x + offset.x - 3, this.rect.position.y + offset.y - 24 + this._floatOffset))
-        // this.rect.draw(ctx, offset);
+    GreenEntity.prototype.drawImage = function(ctx, offset) {
+        this.rect.draw(ctx, offset, "#00FF00");
     }
     
-    MainChar.prototype._move = function(map, collisionHandler, timeDelta) {
+    GreenEntity.prototype._move = function(map, collisionHandler, timeDelta) {
         this.moveAxis("x", this.velocity.x * timeDelta/9, collisionHandler, map);
         this.moveAxis("y", this.velocity.y * timeDelta/9, collisionHandler, map);
     }
 
-    MainChar.prototype.moveAxis = function(axis, distance, collisionHandler, map) {
+    GreenEntity.prototype.moveAxis = function(axis, distance, collisionHandler, map) {
         var isXaxis = axis === "x";
         var currentTiles = collisionHandler.collidingTiles(map, this.rect);
         // Move forward the right position area, then look at the tiles the rect is on
@@ -85,18 +86,15 @@ function(Animation, Entity, Vector, goody, vars)
         var newTiles = collisionHandler.collidingTiles(map, this.rect);
         // See if you're on any new tiles
         for (var i = 0; i < newTiles.length; i++) {
-            // If the one of the new tiles was just stepped onto
+            // If the one of the new tiles was just stepped onto is in the collision map
             if (map.collisionMap[newTiles[i]] !== 0) {
                 this.moveBack(isXaxis, distance, newTiles[i], map);
                 i = newTiles.length;
             }
-            else if (!goody.inArray(currentTiles, newTiles[i])) { 
-                var newTile = newTiles[i];
-            }
         }
     }
 
-    MainChar.prototype.moveBack = function(isXaxis, distance, newTile, map){
+    GreenEntity.prototype.moveBack = function(isXaxis, distance, newTile, map){
         // moves the entity out of walls it has collided with
 
         // moving right, hit left side of wall
@@ -118,6 +116,6 @@ function(Animation, Entity, Vector, goody, vars)
     }
     
     return {
-        MainChar: MainChar
+        GreenEntity: GreenEntity
     };
 });

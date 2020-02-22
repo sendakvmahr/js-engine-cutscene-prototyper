@@ -1,5 +1,5 @@
-define(["physics/Vector", "input/Button", "scene/MenuScene", "scene/MapScene", "input/InputHandler","lib/goody", "entities/MainChar", "display/MapCamera", "levels/maps", "assets/vars", "map/Map", "physics/CollisionHandler", "scene/CutScene", "levels/tilesets"],
-function(Vector, Button, MenuScene, MapScene, InputHandler, goody, MainChar, MapCamera, maps, vars, Map, CollisionHandler, CutScene, Tilesets)
+define(["physics/Vector", "input/Button", "scene/MenuScene", "scene/MapScene", "input/InputHandler","lib/goody", "display/MapCamera", "levels/maps", "assets/vars", "map/Map", "physics/CollisionHandler", "scene/CutScene", "levels/tilesets"],
+function(Vector, Button, MenuScene, MapScene, InputHandler, goody, MapCamera, maps, vars, Map, CollisionHandler, CutScene, Tilesets)
 {
     function mainLoop() {
         this.canvas = document.getElementById('canvas');

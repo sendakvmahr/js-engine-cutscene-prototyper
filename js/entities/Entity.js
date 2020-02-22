@@ -1,12 +1,12 @@
 /*
 Base class for all entities
 */
-define(["lib/goody", "physics/Vector", "physics/Rect"],
-function(goody, Vector, Rect)
+define(["lib/goody", "physics/Vector", "physics/Rect", "assets/vars"],
+function(goody, Vector, Rect, vars)
 {    
     function Entity(x, y, z) {       
         this.velocity = new Vector.Vector(0, 0); 
-        this.rect = new Rect.Rect(x, y, 1, 1);
+        this.rect = new Rect.Rect(x, y, vars.tileDimension, vars.tileDimension);
     }
 
     Entity.prototype.setPosition = function(x, y) {
@@ -16,6 +16,10 @@ function(goody, Vector, Rect)
 
     Entity.prototype.drawImage = function(ctx, offset) {
         this.rect.draw(ctx, offset);
+    }
+
+    Entity.prototype.update = function() {
+
     }
     
     return {

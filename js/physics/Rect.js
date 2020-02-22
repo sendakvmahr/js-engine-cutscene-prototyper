@@ -2,6 +2,7 @@ define(["lib/goody", "physics/Vector"],
 function(goody, Vector)
 {    
     function Rect(x, y, width, height){
+        // Standard Rect Class
         this.position = new Vector.Vector(x, y);
         this.width = width;
         this.height = height;
@@ -34,7 +35,7 @@ function(goody, Vector)
     
     Rect.prototype.draw = function(ctx, offset, color) {
         // Draws the rect on a canvas context
-        ctx.fillStyle = goody.optional(color, (Math.random().toString(16) + '000000').slice(2, 8));
+        ctx.fillStyle = goody.optional(color, ("#FF0000"));
         ctx.fillRect(this.position.x + offset.x, this.position.y + offset.y, this.width, this.height);
     }
     
