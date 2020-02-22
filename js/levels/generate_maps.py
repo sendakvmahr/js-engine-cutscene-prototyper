@@ -62,17 +62,20 @@ def generate_map_file(levels):
 def from_xml_tileset(filename):
     # formats relevant information into a json string
     root = ET.parse(filename).getroot()
+    tilewidth = int(root.attrib["tilewidth"])
     name = filename.split("/")[-1].replace(".tsx", "")
     _image = root.find("image")
     image = _image.attrib["source"].split("/")[-1]
     width = _image.attrib["width"]
     height = _image.attrib["height"]
+    tilecount = str(int(int(_image.attrib["height"]) * int(_image.attrib["width"])/ tilewidth))
 
-    result = '\t"' + name + '": {\n'
+    result = '\t"tiles": [{\n'
     result += '\t\t"name": "' + name + '",\n'
     result += '\t\t"image": "' + image + '",\n' 
     result += '\t\t"width": "' + width + '",\n' 
     result += '\t\t"height": "' + height + '",\n' 
+    result += '\t\t"tilecount": "' + tilecount + '",\n' 
     result += '\t\t"properties": [\n'
     for tile in root.findall('tile'):
         result += '\t\t\t{\n\t\t\t\t"id": ' + tile.attrib["id"] + ",\n"
@@ -80,8 +83,8 @@ def from_xml_tileset(filename):
             result += '\t\t\t\t"{}": "{}",\n'.format(p.attrib["name"], p.attrib["value"])
         result += '\t\t\t},\n'
     result += '\t\t]\n'
-    result += '\t},\n'
-    result += '}\n'
+    result += '\t}\n'
+    result += ']}\n'
     return result
     
 def rewrite_assets(tilesets):
@@ -98,5 +101,5 @@ def rewrite_assets(tilesets):
 maps = gen_results(LEVELS_DIR)
 generate_map_file(maps)
 
-#tilesets = gen_results(ASSETS_DIR)
-#rewrite_assets(tilesets)
+tilesets = gen_results(ASSETS_DIR)
+rewrite_assets(tilesets)

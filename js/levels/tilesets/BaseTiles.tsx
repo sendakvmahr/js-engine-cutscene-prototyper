@@ -8,6 +8,7 @@
  </tile>
  <tile id="8">
   <properties>
+   <property name="camera" type="bool" value="true"/>
    <property name="spawn" value="testEntity"/>
   </properties>
  </tile>

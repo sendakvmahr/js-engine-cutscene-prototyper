@@ -21,7 +21,6 @@ function(goody, Vector, vars)
             this.tileset[name] = tilesets[i];
             this.tilesetInfo.push([tilecount, name]);
         }
-        console.log(this);
         // Layers of the map, used for display
         this.imageMap = [];
         this.effectMap = [];

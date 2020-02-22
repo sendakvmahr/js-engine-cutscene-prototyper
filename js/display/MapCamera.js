@@ -162,9 +162,7 @@ function(Vector, goody, vars)
             }
             tileOffset = tilesetinfo[n][0];
         }
-        console.log(tilesetinfo)
         var tileset = map.tileset[tiles];
-        console.log(tileset);
 
         // offset for the number and processing tiles
         //tile = tile - 13; 
